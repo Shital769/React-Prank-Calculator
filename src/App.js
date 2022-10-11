@@ -2,13 +2,23 @@ import "./App.css";
 import { useState } from "react";
 import { BtnArea } from "./Components/BtnArea";
 import { Display } from "./Components/Display";
+import sound from "./Assets/cock-roaster.mp3";
 const operators = ["%", "/", "*", "-", "+"];
+
 
 const App = () => {
   const [strToDisplay, setStrToDisplay] = useState("");
   const [lastOperator, setLastOperator] = useState("");
+  const [isPrank, setIsPrank] = useState(false);
+
+
+  const randomNumber = () => {
+    const num = Math.round(Math.random() *10);
+    return num > 3 ? 0 : num;
+  };
 
   const handleOnButtonClick = (val) => {
+    isPrank && setIsPrank(false);
     if (val === "C") {
       //delete the character
       return setStrToDisplay(strToDisplay.slice(0, -1));
@@ -26,8 +36,16 @@ const App = () => {
         temStr = strToDisplay.slice(0, -1);
       }
       // evaluating total
+const extra = randomNumber();
+if (extra) {
+  setIsPrank(true);
+  const audio = new Audio(sound);
+  audio.play();
+}
 
-      return setStrToDisplay(eval(temStr).toString());
+extra && setIsPrank(true);
+const total = eval(temStr) + extra;
+      return setStrToDisplay(total.toString());
     }
 
     //for operators used
